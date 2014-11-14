@@ -32,13 +32,21 @@ class Category extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('updated_at', 'required'),
+			array('title', 'required'),
 			array('status', 'numerical', 'integerOnly'=>true),
 			array('title', 'length', 'max'=>255),
-			array('description, created_at', 'safe'),
+			array('description', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, title, description, status, updated_at, created_at', 'safe', 'on'=>'search'),
+            array('updated_at','default',
+                'value'=>new CDbExpression('NOW()'),
+                'setOnEmpty'=>false,'on'=>'update'
+            ),
+            array('created_at, updated_at','default',
+                'value'=>new CDbExpression('NOW()'),
+                'setOnEmpty'=>false,'on'=>'insert'
+            )
 		);
 	}
 
