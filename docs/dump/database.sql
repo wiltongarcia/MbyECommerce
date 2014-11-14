@@ -42,7 +42,7 @@ created_at TIMESTAMP NOT NULL,
 PRIMARY KEY (id)
 );
 
-CREATE TABLE order_itens
+CREATE TABLE order_items
 (
 id int(11) NOT NULL AUTO_INCREMENT,
 order_id int(11),
@@ -76,9 +76,9 @@ created_at TIMESTAMP NOT NULL,
 PRIMARY KEY (id)
 );
 
-ALTER TABLE order_itens ADD FOREIGN KEY order_id_idxfk (order_id) REFERENCES orders (id);
+ALTER TABLE order_items ADD FOREIGN KEY order_id_idxfk (order_id) REFERENCES orders (id);
 
-ALTER TABLE order_itens ADD FOREIGN KEY product_id_idxfk (product_id) REFERENCES products (id);
+ALTER TABLE order_items ADD FOREIGN KEY product_id_idxfk (product_id) REFERENCES products (id);
 
 ALTER TABLE product_categories ADD FOREIGN KEY product_id_idxfk_1 (product_id) REFERENCES products (id);
 
