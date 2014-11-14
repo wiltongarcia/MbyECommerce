@@ -14,7 +14,7 @@
  * @property string $created_at
  *
  * The followings are the available model relations:
- * @property OrderItens[] $orderItens
+ * @property OrderItems[] $orderItems
  * @property ProductCategories[] $productCategories
  * @property ProductCharacteristics[] $productCharacteristics
  */
@@ -36,11 +36,11 @@ class Product extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('image, updated_at', 'required'),
+			array('title, description, image, price', 'required'),
 			array('status', 'numerical', 'integerOnly'=>true),
 			array('title, image', 'length', 'max'=>255),
 			array('price', 'length', 'max'=>10),
-			array('description, created_at', 'safe'),
+			array('created_at', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, title, description, image, price, status, updated_at, created_at', 'safe', 'on'=>'search'),
@@ -55,7 +55,7 @@ class Product extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'orderItens' => array(self::HAS_MANY, 'OrderItens', 'product_id'),
+			'orderItems' => array(self::HAS_MANY, 'OrderItems', 'product_id'),
 			'productCategories' => array(self::HAS_MANY, 'ProductCategories', 'product_id'),
 			'productCharacteristics' => array(self::HAS_MANY, 'ProductCharacteristics', 'product_id'),
 		);
