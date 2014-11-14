@@ -18,6 +18,8 @@
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
 	<?php echo $form->errorSummary($model); ?>
+    <?php echo $form->hiddenField($model,'updated_at'); ?>
+    <?php echo $form->hiddenField($model,'created_at'); ?>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'title'); ?>
@@ -37,9 +39,6 @@
 		<?php echo $form->error($model,'status'); ?>
 	</div>
 
-		<?php echo $form->hiddenField($model,'updated_at'); ?>
-
-		<?php echo $form->hiddenField($model,'created_at'); ?>
 
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
