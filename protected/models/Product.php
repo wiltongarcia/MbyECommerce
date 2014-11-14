@@ -40,10 +40,18 @@ class Product extends CActiveRecord
 			array('status', 'numerical', 'integerOnly'=>true),
 			array('title, image', 'length', 'max'=>255),
 			array('price', 'length', 'max'=>10),
-			array('created_at', 'safe'),
+			array('description', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, title, description, image, price, status, updated_at, created_at', 'safe', 'on'=>'search'),
+            array('updated_at','default',
+                'value'=>new CDbExpression('NOW()'),
+                'setOnEmpty'=>false,'on'=>'update'
+            ),
+            array('created_at, updated_at','default',
+                'value'=>new CDbExpression('NOW()'),
+                'setOnEmpty'=>false,'on'=>'insert'
+            )
 		);
 	}
 
