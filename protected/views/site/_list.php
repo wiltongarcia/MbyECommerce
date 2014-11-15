@@ -6,7 +6,7 @@
                             <div>
                                 <div class="image">
                                     <a href="#">
-                                        <img src="http://placehold.it/130x100" alt="<?php $l->title; ?>" />
+                                        <div style="width:130px;height:100px;background: #F0F0F0 url(images/<?php echo $l->image; ?>) no-repeat center center;background-size: 130px"></div>
                                     </a>
                                 </div>
                                 <div class="name">
