@@ -1,6 +1,7 @@
 <?php
 /* @var $this ProductsController */
 /* @var $model Product */
+/* @var $categories Category */
 /* @var $form CActiveForm */
 ?>
 
@@ -59,7 +60,50 @@
 		<?php echo $form->labelEx($model,'created_at'); ?>
 		<?php echo $form->textField($model,'created_at'); ?>
 		<?php echo $form->error($model,'created_at'); ?>
-	</div>
+    </div>
+
+    <?php if(!$model->isNewRecord): ?>
+    <div class="row">
+        <h5>Categories</h5>
+        <?php foreach ($categories as $k => $c): $c=(object)$c;?>
+            <input class="checkbox-categories" 
+                        id="category-<?php echo $c->id; ?>" 
+                            type="checkbox" 
+                                data-product="<?php echo $model->id; ?>" 
+                                    data-category="<?php echo $c->id; ?>"
+                                        <?php echo !empty($c->relation_id) ? 'checked' : ''; ?>>
+            <label for="category-<?php echo $c->id; ?>"><?php echo $c->title; ?></label>
+        <?php endForeach; ?>
+    </div>
+    <?php endIf; ?>
+    <script type="text/javascript" charset="utf-8">
+        
+        var serviceUrls = {
+            save:'<?php echo Yii::app()->createUrl('productCategories/create'); ?>',
+            delete:'<?php echo Yii::app()->createUrl('productCategories/delete'); ?>'    
+        };
+
+        $(function () {
+            $('.checkbox-categories').click(function (e) {
+                var data = {
+                    ProductCategories : {
+                        product_id : $(this).attr('data-product'),
+                        category_id : $(this).attr('data-category')    
+                    },
+                    ajax:1
+                };
+                $.ajax({
+                    type: "POST",
+                    url: serviceUrls[this.checked ? 'save' : 'delete'],
+                    data: data,
+                    success: function (data) {
+                        console.log(data); 
+                    },
+                    dataType: 'json'
+                });  
+            });
+        });
+    </script>
 
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
