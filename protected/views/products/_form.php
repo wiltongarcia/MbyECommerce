@@ -19,6 +19,8 @@
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
 	<?php echo $form->errorSummary($model); ?>
+    <?php echo $form->hiddenField($model,'updated_at'); ?>
+    <?php echo $form->hiddenField($model,'created_at'); ?>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'title'); ?>
@@ -46,25 +48,13 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'status'); ?>
-		<?php echo $form->textField($model,'status'); ?>
+        <?php echo $form->dropDownList($model,'status',array('1'=>'active','2'=>'inactive'), array('options' => array('1'=>array('selected'=>true)))); ?>
 		<?php echo $form->error($model,'status'); ?>
 	</div>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'updated_at'); ?>
-		<?php echo $form->textField($model,'updated_at'); ?>
-		<?php echo $form->error($model,'updated_at'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'created_at'); ?>
-		<?php echo $form->textField($model,'created_at'); ?>
-		<?php echo $form->error($model,'created_at'); ?>
-    </div>
-
     <?php if(!$model->isNewRecord): ?>
     <div class="row">
-        <h5>Categories</h5>
+        <h5>Categories</h5  >
         <?php foreach ($categories as $k => $c): $c=(object)$c;?>
             <input class="checkbox-categories" 
                         id="category-<?php echo $c->id; ?>" 
