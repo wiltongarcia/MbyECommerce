@@ -32,10 +32,10 @@ class Characteristic extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('updated_at', 'required'),
+			array('title', 'required'),
 			array('status', 'numerical', 'integerOnly'=>true),
 			array('title', 'length', 'max'=>255),
-			array('description, created_at', 'safe'),
+			array('description', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, title, description, status, updated_at, created_at', 'safe', 'on'=>'search'),
@@ -50,6 +50,7 @@ class Characteristic extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'product' => array(self::MANY_MANY, 'Product', 'product_characteristics(characteristic_id, product_id)'),
 			'productCharacteristics' => array(self::HAS_MANY, 'ProductCharacteristics', 'characteristic_id'),
 		);
 	}
@@ -109,4 +110,18 @@ class Characteristic extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+
+    /**
+     * Retorna as caracteristicas juntamente com o id da relação entre produtos e caracteristicas (product_characteristics)
+     *
+     * @return void
+     * @author Me
+     **/
+    public function getCharacteristics($id)
+    {
+        $connection = Yii::app()->db;
+        $command = $connection->createCommand("SELECT c.id, c.title, pc.id AS relation_id FROM characteristics AS c LEFT JOIN product_characteristics AS pc ON pc.characteristic_id = c.id AND pc.product_id = {$id}");
+
+        return $command->queryAll();
+    }     
 }

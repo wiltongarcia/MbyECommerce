@@ -118,4 +118,32 @@ class Category extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+
+    /**
+     * Retorna as categorias juntamente com o id da relação entre produtos e categorias (product_categories)
+     *
+     * @return Array
+     * @author Wilton Garcia
+     **/
+    public function getCategories($id)
+    {
+        $connection = Yii::app()->db;
+        $command = $connection->createCommand("SELECT c.id, c.title, pc.id AS relation_id FROM categories AS c LEFT JOIN product_categories AS pc ON pc.category_id = c.id AND pc.product_id = {$id}");
+
+        return $command->queryAll();
+    }
+
+    /**
+     * Retorna as categorias com o total de projetos
+     *
+     * @return Category
+     * @author Wilton Garcia
+     **/
+    public function getCategoriesWithTotal()
+    {
+        $connection = Yii::app()->db;
+        $command = $connection->createCommand("SELECT c.id, c.title, COUNT(pc.id) AS products_total FROM categories AS c LEFT JOIN product_categories AS pc ON pc.category_id = c.id GROUP BY c.id ORDER BY c.title");
+
+        return $command->queryAll();
+    }  
 }
