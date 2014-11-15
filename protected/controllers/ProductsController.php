@@ -68,9 +68,19 @@ class ProductsController extends Controller
 
 		if(isset($_POST['Product']))
 		{
-			$model->attributes=$_POST['Product'];
-			if($model->save())
-				$this->redirect(array('update','id'=>$model->id));
+            $model->attributes=$_POST['Product'];
+
+            $imageUploadFile = CUploadedFile::getInstance($model, 'image');
+            if($imageUploadFile !== null){ 
+                $imageFileName = mktime().$imageUploadFile->name;
+                $model->image = $imageFileName;
+            } 
+            
+            if($model->save()) {
+                $imagesPath = realpath(Yii::app()->basePath . '/../images');
+                $model->image->saveAs("{$imagesPath}/{$model->image}");
+                $this->redirect(array('update','id'=>$model->id));
+            }
 		}
 
 		$this->render('create',array(
@@ -100,8 +110,17 @@ class ProductsController extends Controller
 		if(isset($_POST['Product']))
 		{
 			$model->attributes=$_POST['Product'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+            $imageUploadFile = CUploadedFile::getInstance($model, 'image');
+            if($imageUploadFile !== null){ 
+                $imageFileName = str_replace(' ', '-', mktime().$imageUploadFile->name);
+                $model->image = $imageFileName;
+            } 
+            if($model->save())
+            {
+                $imagesPath = realpath(Yii::app()->basePath . '/../images');
+                $imageUploadFile->saveAs("{$imagesPath}/{$model->image}");
+                $this->redirect(array('view','id'=>$model->id));
+            }
 		}
 
 		$this->render('update',array(

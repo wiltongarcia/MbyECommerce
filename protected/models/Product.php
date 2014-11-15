@@ -36,11 +36,12 @@ class Product extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('title, description, image, price', 'required'),
+			array('title, description, price', 'required'),
 			array('status', 'numerical', 'integerOnly'=>true),
 			array('title, image', 'length', 'max'=>255),
 			array('price', 'length', 'max'=>10),
 			array('created_at', 'safe'),
+            array('image', 'file', 'types'=>'jpg, gif, png'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, title, description, image, price, status, updated_at, created_at', 'safe', 'on'=>'search'),
