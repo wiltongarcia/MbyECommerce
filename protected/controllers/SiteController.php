@@ -3,6 +3,12 @@
 class SiteController extends Controller
 {
 	/**
+	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
+	 * using two-column layout. See 'protected/views/layouts/column2.php'.
+	 */
+	public $layout='//layouts/site';
+    
+	/**
 	 * Declares class-based actions.
 	 */
 	public function actions()
@@ -26,10 +32,18 @@ class SiteController extends Controller
 	 * when an action is not explicitly requested by users.
 	 */
 	public function actionIndex()
-	{
+    {
+        $productModel=new Product(); 
+        $categoryModel=new Category();
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
-		$this->render('index');
+        $this->render('index', array(
+            'categories'=>$categoryModel->getCategoriesWithTotal(),
+            'latest' => $productModel::model()->findAll(array(
+                'order'=>'created_at DESC',
+                'limit'=>10
+            ))
+        ));
 	}
 
 	/**
