@@ -14,7 +14,7 @@
  * @property Categories $category
  * @property Products $product
  */
-class ProductCategory extends CActiveRecord
+class ProductCategories extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
@@ -101,7 +101,7 @@ class ProductCategory extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return ProductCategory the static model class
+	 * @return ProductCategories the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
