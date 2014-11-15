@@ -32,12 +32,19 @@ class ProductCharacteristic extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('product_id, characteristic_id, updated_at', 'required'),
+			array('product_id, characteristic_id', 'required'),
 			array('product_id, characteristic_id', 'numerical', 'integerOnly'=>true),
-			array('created_at', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, product_id, characteristic_id, updated_at, created_at', 'safe', 'on'=>'search'),
+            array('updated_at','default',
+                'value'=>new CDbExpression('NOW()'),
+                'setOnEmpty'=>false,'on'=>'update'
+            ),
+            array('created_at, updated_at','default',
+                'value'=>new CDbExpression('NOW()'),
+                'setOnEmpty'=>false,'on'=>'insert'
+            )
 		);
 	}
 

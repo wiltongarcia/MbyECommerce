@@ -18,4 +18,4 @@ $this->menu=array(
 
 <h1>Update Product <?php echo $model->id; ?></h1>
 
-<?php $this->renderPartial('_form', array('model'=>$model, 'categories'=>$categories)); ?>
+<?php $this->renderPartial('_form', array('model'=>$model, 'categories'=>$categories, 'characteristics' => $characteristics)); ?>

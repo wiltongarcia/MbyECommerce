@@ -53,38 +53,34 @@
 	</div>
 
     <?php if(!$model->isNewRecord): ?>
-    <div class="row">
-        <h5>Categories</h5  >
-        <?php foreach ($categories as $k => $c): $c=(object)$c;?>
-            <input class="checkbox-categories" 
-                        id="category-<?php echo $c->id; ?>" 
-                            type="checkbox" 
-                                data-product="<?php echo $model->id; ?>" 
-                                    data-category="<?php echo $c->id; ?>"
-                                        <?php echo !empty($c->relation_id) ? 'checked' : ''; ?>>
-            <label for="category-<?php echo $c->id; ?>"><?php echo $c->title; ?></label>
-        <?php endForeach; ?>
-    </div>
+        <?php $this->renderPartial('_categories', array('model'=>$model, 'categories'=>$categories, 'characteristics' => $characteristics)); ?>
+        <?php $this->renderPartial('_characteristics', array('model'=>$model, 'categories'=>$categories, 'characteristics' => $characteristics)); ?>
     <?php endIf; ?>
     <script type="text/javascript" charset="utf-8">
         
         var serviceUrls = {
-            save:'<?php echo Yii::app()->createUrl('productCategories/create'); ?>',
-            delete:'<?php echo Yii::app()->createUrl('productCategories/delete'); ?>'    
+            ProductCategories:{
+                save:'<?php echo Yii::app()->createUrl('productCategories/create'); ?>',
+                delete:'<?php echo Yii::app()->createUrl('productCategories/delete'); ?>'
+            },
+            ProductCharacteristic:{
+                save:'<?php echo Yii::app()->createUrl('productCharacteristics/create'); ?>',
+                delete:'<?php echo Yii::app()->createUrl('productCharacteristics/delete'); ?>'
+            }
         };
 
         $(function () {
-            $('.checkbox-categories').click(function (e) {
+            $('.checkbox-categories, .checkbox-characteristics').click(function (e) {
                 var data = {
-                    ProductCategories : {
-                        product_id : $(this).attr('data-product'),
-                        category_id : $(this).attr('data-category')    
-                    },
                     ajax:1
                 };
+                data[$(this).attr('data-class')] = {};
+                data[$(this).attr('data-class')]['product_id'] = $(this).attr('data-product');
+                data[$(this).attr('data-class')][$(this).attr('data-field')] = $(this).attr('data-relationship');
+
                 $.ajax({
                     type: "POST",
-                    url: serviceUrls[this.checked ? 'save' : 'delete'],
+                    url: serviceUrls[$(this).attr('data-class')][this.checked ? 'save' : 'delete'],
                     data: data,
                     success: function (data) {
                         console.log(data); 
