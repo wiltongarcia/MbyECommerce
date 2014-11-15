@@ -63,7 +63,6 @@ class ProductsController extends Controller
 	public function actionCreate()
 	{
 		$model=new Product;
-
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
@@ -75,7 +74,8 @@ class ProductsController extends Controller
 		}
 
 		$this->render('create',array(
-			'model'=>$model,
+            'model'=>$model,
+            'categories'=>array(),
 		));
 	}
 
@@ -87,6 +87,7 @@ class ProductsController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
+        $categories=$this->getCategories($id);
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -100,6 +101,7 @@ class ProductsController extends Controller
 
 		$this->render('update',array(
 			'model'=>$model,
+            'categories'=>$categories,
 		));
 	}
 
@@ -157,6 +159,20 @@ class ProductsController extends Controller
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
 	}
+
+    /**
+     * Retorna as categorias juntamente com o id da relação entre produtos e categorias (product_categories)
+     *
+     * @return Array
+     * @author Wilton Garcia
+     **/
+    protected function getCategories($id)
+    {
+        $connection = Yii::app()->db;
+        $command = $connection->createCommand("SELECT c.id, c.title, pc.id AS relation_id FROM categories AS c LEFT JOIN product_categories AS pc ON pc.category_id = c.id AND pc.product_id = {$id}");
+
+        return $command->queryAll();
+    }
 
 	/**
 	 * Performs the AJAX validation.
