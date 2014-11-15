@@ -40,18 +40,10 @@ class Product extends CActiveRecord
 			array('status', 'numerical', 'integerOnly'=>true),
 			array('title, image', 'length', 'max'=>255),
 			array('price', 'length', 'max'=>10),
-			array('description', 'safe'),
+			array('created_at', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, title, description, image, price, status, updated_at, created_at', 'safe', 'on'=>'search'),
-            array('updated_at','default',
-                'value'=>new CDbExpression('NOW()'),
-                'setOnEmpty'=>false,'on'=>'update'
-            ),
-            array('created_at, updated_at','default',
-                'value'=>new CDbExpression('NOW()'),
-                'setOnEmpty'=>false,'on'=>'insert'
-            )
 		);
 	}
 
@@ -64,6 +56,7 @@ class Product extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'orderItems' => array(self::HAS_MANY, 'OrderItems', 'product_id'),
+			'category' => array(self::MANY_MANY, 'Category', 'product_categories(product_id, category_id)'),
 			'productCategories' => array(self::HAS_MANY, 'ProductCategories', 'product_id'),
 			'productCharacteristics' => array(self::HAS_MANY, 'ProductCharacteristics', 'product_id'),
 		);
