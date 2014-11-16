@@ -49,7 +49,14 @@ return array(
 		*/
 
 		// database settings are configured in database.php
-		'db'=>require(dirname(__FILE__).'/database.php'),
+        'db'=>require(dirname(__FILE__).'/database.php'),
+
+        'cache'=>array(
+            'class'=>'system.caching.CMemCache',
+            'servers'=>array(
+                array('host'=>'localhost', 'port'=>11211, 'weight'=>60),
+            ),
+        ),
 
 		'errorHandler'=>array(
 			// use 'site/error' action to display errors
