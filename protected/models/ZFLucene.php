@@ -123,6 +123,20 @@ class ZFLucene
         return false;      
     }
 
+    /**
+     * Deleta Document ao deletar o registro
+     *
+     * @return Boolean
+     * @author Wilton Garcia
+     **/
+    public function delete($id)
+    {
+        $docs=$index->find("id:{$id}");
+        $tf=true;
+        foreach ($docs as $d)
+            $tf=$tf && $index->delete($d);
+        return $tf;     
+    }
 
     /**
      * Cria, popula e retorna um Document do Lucene 

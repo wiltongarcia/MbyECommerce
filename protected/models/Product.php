@@ -56,7 +56,7 @@ class Product extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'orderItems' => array(self::HAS_MANY, 'OrderItems', 'product_id'),
+			'orderItem' => array(self::HAS_MANY, 'OrderItem', 'product_id'),
 
             'category' => array(self::MANY_MANY, 'Category', 'product_categories(product_id, category_id)'),
 			'characteristic' => array(self::MANY_MANY, 'Characteristic', 'product_characteristics(product_id, characteristic_id)'),
@@ -114,6 +114,17 @@ class Product extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+
+    public function beforeDelete()
+    {
+        foreach($this->characteristic as $c)
+            $c->delete();
+        foreach($this->category as $c)
+            $c->delete();
+        foreach($this->orderItem as $c)
+            $c->delete();
+        return parent::beforeDelete();
+    }
 
 	/**
 	 * Returns the static model of the specified AR class.
