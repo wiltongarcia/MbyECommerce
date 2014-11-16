@@ -5,7 +5,7 @@
                         » <a href="./Shopping Cart_files/Shopping Cart.html">Shopping Cart</a>
                     </div>
                     <h1>Shopping Cart</h1>
-                    <form action="./Shopping Cart_files/Shopping Cart.html" method="post" enctype="multipart/form-data" id="basket">
+                     <?php echo CHtml::beginForm(array(), 'post', array('id'=> 'basket')); ?>
                         <div class="cart-info">
                             <table>
                                 <thead>
@@ -19,7 +19,8 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($cart['items'] as $p):  ?>
+                                    <?php foreach ($cart['items'] as $k=>$p):  ?>
+                                    <input type="hidden" name="ordeItems[<?php echo $k; ?>][quantity]" value="<?php echo $p['quantity']; ?>" size="3">
                                     <tr>
                                         <td class="remove"><input type="checkbox" name="remove[]" value="50"></td>
                                         <td class="image">                    
@@ -30,15 +31,21 @@
                                         <td class="name">
                                             <a href="#"><?php echo $p['title']; ?></a>
                                         </td>
-                                        <td class="quantity"><input type="text" name="quantity" value="<?php echo $p['quantity']; ?>" size="3"></td>
-                                        <td class="price">$<?php echo number_format($p['price'], 2); ?></td>
-                                        <td class="total">$<?php echo number_format($p['total'], 2); ?></td>
+                                        <td class="quantity">
+                                            <?php echo $p['quantity']; ?>
+                                        </td>
+                                        <td class="price">
+                                            $<?php echo number_format($p['price'], 2); ?>
+                                        </td>
+                                        <td class="total">
+                                            $<?php echo number_format($p['total'], 2); ?>
+                                        </td>
                                     </tr>
                                     <?php endForeach; ?>
                                 </tbody>
                             </table>
                         </div>
-                    </form>
+                        <?php echo CHtml::endForm(''); ?>
                     <div class="cart-total">
                         <table>
                             <tbody>
@@ -51,9 +58,12 @@
                         </table>
                     </div>
                     <div class="buttons">
-                        <div class="left"><a onclick="$(&#39;#basket&#39;).submit();" class="button"><span>Update</span></a></div>
-                        <div class="right"><a href="http://www.santoshsetty.com/tf/opencart-templates/mystockimageshop-v15/index.php?route=checkout/checkout" class="button"><span>Checkout</span></a></div>
-                        <div class="center"><a href="http://www.santoshsetty.com/tf/opencart-templates/mystockimageshop-v15/index.php?route=common/home" class="button"><span>Continue Shopping</span></a></div>
+                        <div class="right">
+                            <a href="<?php echo Yii::app()->createUrl('site/checkout'); ?>" class="button"><span>Checkout</span></a>
+                        </div>
+                        <div class="center">
+                            <a href="<?php echo Yii::app()->createUrl('site/index'); ?>" class="button"><span>Continue Shopping</span></a>
+                        </div>
                     </div>
                 </div>
                 <?php $this->renderPartial('_scriptcart'); ?>
