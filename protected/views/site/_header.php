@@ -10,10 +10,10 @@
                     <!-- Logo Ends -->
                     <!-- Search Starts -->
                     <div id="search">
-                        <form action="<?php echo Yii::app()->createUrl('site/search'); ?>" method="get" accept-charset="utf-8">
+                        <?php echo CHtml::beginForm(array('site/search'), 'get', array('style'=> 'inline')); ?>
                             <button type="submit" style="border:none" class="button-search"></button>
-                            <input type="text" name="q" value="Search" onclick="this.value = '';" onkeydown="this.style.color = '#b1b1b1';" />
-                        </form>
+                            <?php echo CHtml::textField('q', '', array('placeholder'=> 'search...')); ?>
+                        <?php echo CHtml::endForm(''); ?>                        
                     </div>
                     <!-- Search Ends -->
                     <!-- Welcome Text Starts -->
