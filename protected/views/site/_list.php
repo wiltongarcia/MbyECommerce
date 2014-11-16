@@ -16,7 +16,7 @@
                                     $<?php echo $l->price; ?>                  
                                 </div>
                                 <div class="cart">
-                                    <a data-product="<?php echo $l->id; ?>" class="button add-to-cart">
+                                    <a data-product="<?php echo $l->id; ?>" data-price="<?php echo $l->price; ?>" data-image="<?php echo $l->image; ?>" data-title="<?php echo $l->title; ?>" class="button add-to-cart">
                                         <span>Add to Cart</span>
                                     </a>
                                 </div>

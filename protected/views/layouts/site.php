@@ -15,6 +15,7 @@
         <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/site/js/jquery/tabs.js"></script>
         <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/site/js/common.js"></script>
         <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/site/js/jquery/nivo-slider/jquery.nivo.slider.pack.js"></script>
+        <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/site/js/jquery/jquery.cookie.js"></script>
         <!--[if IE 7]>
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/assets/site/css/ie7.css" />
         <![endif]-->
