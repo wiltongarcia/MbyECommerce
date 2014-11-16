@@ -82,7 +82,8 @@ class SiteController extends Controller
 	 * Displays the login page
 	 */
 	public function actionLogin()
-	{
+    {
+        $this->layout='//layouts/column2'; 
 		$model=new LoginForm;
 
 		// if it is ajax validation request
@@ -134,10 +135,10 @@ class SiteController extends Controller
     }
 
     /**
-     * undocumented function
+     * exibe a interna de produtos
      *
      * @return void
-     * @author Me
+     * @author Wilton Garcia
      **/
     public function actionProduct($id)
     {
@@ -146,8 +147,38 @@ class SiteController extends Controller
         $dependency = new CDbCacheDependency("SELECT p.updated_at FROM products as p WHERE p.id={$id}");
         $this->render('product', array(
             'categories'=>$categoryModel->getCategoriesWithTotal(),
-            'product'=>$productModel->cache(600, $dependency)->findByPk($id),
+            'product'=>$productModel->cache(600, $dependency)->with('characteristic')->findByPk($id),
         ));     
+    }
+
+    /**
+     * Efetua o checkout dos produtos no carrinho
+     *
+     * @return void
+     * @author Wilton Garcia
+     **/
+    public function actionCheckout()
+    {
+        $cart=$this->getCart();
+
+        if (!empty($cart))
+        {    
+            $this->destroyCart();
+            $order = $this->processOrder($cart);
+
+            $this->enqueue($order);
+
+            $categoryModel=new Category();
+            $this->render('checkout', array(
+                'categories'=>$categoryModel->getCategoriesWithTotal(),
+                'cart'=>$cart,
+                'order'=>uniqid(),
+            )); 
+        }
+        else
+        {
+            $this->redirect(Yii::app()->homeUrl);
+        }    
     }
 
     /**
@@ -169,7 +200,63 @@ class SiteController extends Controller
      **/
     protected function getCacheId()
     {
-        $uuid=$_COOKIE['__cid'];
+        $uuid=isset($_COOKIE['__cid']) ? $_COOKIE['__cid'] : false;
         return $uuid;
     } 
+
+    /**
+     * Remove os cookies e deleta o cache 
+     *
+     * @return Boolean
+     * @author Wilton Garcia
+     **/
+    protected function destroyCart()
+    {
+        return setcookie('__cid', '', time()+(30 * 24 * 3600), '/') 
+                && setcookie('__ci', '', time()+(30 * 24 * 3600), '/') 
+                &&  setcookie('__ct', '', time()+(30 * 24 * 3600), '/') 
+                && Yii::app()->cache->delete($this->getCacheId());   
+    }
+
+    /**
+     * Recebe o carrinho, processa os cados e salva em order e order_items
+     *
+     * @return Order
+     * @author Wilton Garcia
+     **/
+    protected function processOrder($cart)
+    {
+
+        $orderModel=new Order;
+        $orderModel->created_at=date("Y-m-d h:i:s");
+        $orderModel->updated_at=date("Y-m-d h:i:s");
+
+        $orderModel->save();
+
+        foreach ($cart['items'] as $k=>$p)
+        {
+            $orderItemsModel=new OrderItem; 
+            $orderItemsModel->order_id=$orderModel->id;
+            $orderItemsModel->product_id=$k;
+            $orderItemsModel->price=$p['price'];
+            $orderItemsModel->quantity=$p['quantity'];
+            $orderItemsModel->total=$p['total'];
+            $orderItemsModel->save();
+        }
+
+       return $orderModel;
+    }
+
+    /**
+     * Insere a order na fila
+     *
+     * @return void
+     * @author Wilton Garcia
+     **/
+    protected function enqueue($order)
+    {
+        $queue=new Queue;
+        $queue->insert($order);        
+    }
+
 }
