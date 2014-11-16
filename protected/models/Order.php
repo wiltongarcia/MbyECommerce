@@ -9,7 +9,7 @@
  * @property string $created_at
  *
  * The followings are the available model relations:
- * @property OrderItens[] $orderItens
+ * @property OrderItems[] $orderItems
  */
 class Order extends CActiveRecord
 {
@@ -29,8 +29,6 @@ class Order extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('updated_at', 'required'),
-			array('created_at', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, updated_at, created_at', 'safe', 'on'=>'search'),
@@ -45,7 +43,7 @@ class Order extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'orderItens' => array(self::HAS_MANY, 'OrderItens', 'order_id'),
+			'orderItem' => array(self::HAS_MANY, 'OrderItem', 'order_id'),
 		);
 	}
 

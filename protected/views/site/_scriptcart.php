@@ -6,10 +6,10 @@
                         'update':'<?php echo Yii::app()->createUrl('cart/update'); ?>'
                     };
                     var setCartText = function () {
-                        var cartItens = $.cookie('__ci')||'0';
+                        var cartItems = $.cookie('__ci')||'0';
                         var cartTotal = $.cookie('__ct')||'0.00';
-                        $('#cart_total').text(cartItens + ' item(s) - $' + cartTotal);
-                        totalItems = parseInt(cartItens, 10);
+                        $('#cart_total').text(cartItems + ' item(s) - $' + cartTotal);
+                        totalItems = parseInt(cartItems, 10);
                     };
 
 
