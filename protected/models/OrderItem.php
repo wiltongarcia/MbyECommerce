@@ -39,10 +39,17 @@ class OrderItem extends CActiveRecord
 			array('product_id, price, quantity, total', 'required'),
 			array('order_id, product_id, quantity, status', 'numerical', 'integerOnly'=>true),
 			array('price, total', 'length', 'max'=>10),
-			array('updated_at, created_at', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, order_id, product_id, price, quantity, total, status, updated_at, created_at', 'safe', 'on'=>'search'),
+            array('updated_at','default',
+                'value'=>new CDbExpression('NOW()'),
+                'setOnEmpty'=>false,'on'=>'update'
+            ),
+            array('created_at, updated_at','default',
+                'value'=>new CDbExpression('NOW()'),
+                'setOnEmpty'=>false,'on'=>'insert'
+            )
 		);
 	}
 
