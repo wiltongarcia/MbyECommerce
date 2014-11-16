@@ -26,3 +26,15 @@ $this->menu=array(
 		'created_at',
 	),
 )); ?>
+<?php foreach ($model->orderItem as $oi): ?>
+<hr />
+<?php $this->widget('zii.widgets.CDetailView', array(
+	'data'=>$oi,
+	'attributes'=>array(
+		'product_id',
+        'price',
+        'quantity',
+        'total',
+	),
+)); ?>
+<?php endForeach; ?>
