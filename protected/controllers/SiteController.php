@@ -44,7 +44,25 @@ class SiteController extends Controller
                 'limit'=>10
             ))
         ));
-	}
+    }
+
+    public function actionCategory($id)
+    {
+        $categoryModel=new Category();
+        $this->render('category', array(
+            'categories'=>$categoryModel->getCategoriesWithTotal(),
+            'categoryProducts' => $categoryModel::model()->with('product')->findByPk($id)
+        )); 
+    }
+
+    public function actionCart()
+    {
+        $categoryModel=new Category();
+        $this->render('cart',array(
+            'categories'=>$categoryModel->getCategoriesWithTotal(),
+            'cart'=>$this->getCart(),
+        ));    
+    }    
 
 	/**
 	 * This is the action to handle external exceptions.
@@ -119,5 +137,28 @@ class SiteController extends Controller
 	{
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
-	}
+    }
+
+    /**
+     * undocumented function
+     *
+     * @return void
+     * @author Me
+     **/
+    protected function getCart()
+    {
+        return Yii::app()->cache->get($this->getCacheId());    
+    }
+
+    /**
+     * Retorna uuid para ser usado no cache
+     *
+     * @return String
+     * @author Wilton Garcia
+     **/
+    protected function getCacheId()
+    {
+        $uuid=$_COOKIE['__cid'];
+        return $uuid;
+    } 
 }
