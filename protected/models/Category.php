@@ -128,7 +128,8 @@ class Category extends CActiveRecord
     public function getCategories($id)
     {
         $connection = Yii::app()->db;
-        $command = $connection->createCommand("SELECT c.id, c.title, pc.id AS relation_id FROM categories AS c LEFT JOIN product_categories AS pc ON pc.category_id = c.id AND pc.product_id = {$id}");
+        $dependency = new CDbCacheDependency('SELECT MAX(c.updated_at),MAX(p.updated_at) FROM categories AS c, product_categories as p');
+        $command = $connection->cache(1000, $dependency)->createCommand("SELECT c.id, c.title, pc.id AS relation_id FROM categories AS c LEFT JOIN product_categories AS pc ON pc.category_id = c.id AND pc.product_id = {$id}");
 
         return $command->queryAll();
     }
@@ -142,7 +143,8 @@ class Category extends CActiveRecord
     public function getCategoriesWithTotal()
     {
         $connection = Yii::app()->db;
-        $command = $connection->createCommand("SELECT c.id, c.title, COUNT(pc.id) AS products_total FROM categories AS c LEFT JOIN product_categories AS pc ON pc.category_id = c.id GROUP BY c.id ORDER BY c.title");
+        $dependency = new CDbCacheDependency('SELECT MAX(c.updated_at),MAX(p.updated_at) FROM categories AS c, product_categories as p');
+        $command = $connection->cache(1000, $dependency)->createCommand("SELECT c.id, c.title, COUNT(pc.id) AS products_total FROM categories AS c LEFT JOIN product_categories AS pc ON pc.category_id = c.id GROUP BY c.id ORDER BY c.title");
 
         return $command->queryAll();
     }  
