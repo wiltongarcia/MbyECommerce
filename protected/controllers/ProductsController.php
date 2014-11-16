@@ -75,10 +75,14 @@ class ProductsController extends Controller
                 $imageFileName = mktime().$imageUploadFile->name;
                 $model->image = $imageFileName;
             } 
-            
+
             if($model->save()) {
                 $imagesPath = realpath(Yii::app()->basePath . '/../images');
-                $model->image->saveAs("{$imagesPath}/{$model->image}");
+                $imageUploadFile->saveAs("{$imagesPath}/{$model->image}");
+
+                $lucene=new ZFLucene;
+                $lucene->create($model);
+
                 $this->redirect(array('update','id'=>$model->id));
             }
 		}
@@ -119,6 +123,10 @@ class ProductsController extends Controller
             {
                 $imagesPath = realpath(Yii::app()->basePath . '/../images');
                 $imageUploadFile->saveAs("{$imagesPath}/{$model->image}");
+
+                $lucene=new ZFLucene;
+                $lucene->update($model);
+
                 $this->redirect(array('view','id'=>$model->id));
             }
 		}

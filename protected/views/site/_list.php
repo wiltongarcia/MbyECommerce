@@ -5,12 +5,12 @@
                             <?php foreach ($list as $l): ?>
                             <div>
                                 <div class="image">
-                                    <a href="#">
+                                    <a href="<?php echo Yii::app()->createUrl('site/product', array('id' => $l->id)); ?>">
                                         <div style="width:130px;height:100px;background: #F0F0F0 url(images/<?php echo $l->image; ?>) no-repeat center center;background-size: 130px"></div>
                                     </a>
                                 </div>
                                 <div class="name">
-                                    <a href="#"><?php echo $l->title; ?></a>
+                                    <a href="<?php echo Yii::app()->createUrl('site/product', array('id' => $l->id)); ?>"><?php echo $l->title; ?></a>
                                 </div>
                                 <div class="price">
                                     $<?php echo $l->price; ?>                  
