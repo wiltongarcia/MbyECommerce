@@ -2,7 +2,7 @@
             <div id="content">
                 <div class="breadcrumb">
                     <a href="<?php echo Yii::app()->createUrl('site/index'); ?>">Home</a>
-                    &raquo; <a href="<?php echo Yii::app()->createUrl('site/product', array('id'=>$product->id)); ?>">Pins</a>
+                    &raquo; <a href="<?php echo Yii::app()->createUrl('site/product', array('id'=>$product->id)); ?>"><?php echo $product->title; ?></a>
                 </div>
                 <div class="product-info">
                     <div class="left">
@@ -18,6 +18,12 @@
                             <p>
                                 <?php echo nl2br($product->description); ?>
                             </p>
+                            <h4>Characteristics:</h4>
+                            <?php foreach ($product->characteristic as $c): ?>
+                            <span><?php echo $c->title; ?>:</span>
+                            <?php echo $c->description; ?>    
+                            <br>
+                            <?php endForeach; ?>    
                         </div>
                         <div class="price">
                             Price:                $<?php echo $product->price; ?>
