@@ -16,7 +16,7 @@ class ZFLucene
      * @var Array
      **/
     protected $fields = array(
-        'id' => 'Text',
+        'product_id' => 'Text',
         'title' => 'Text',
         'description' => 'Text',
         'image' => 'UnIndexed',
@@ -62,7 +62,7 @@ class ZFLucene
                 foreach($results as $r)
                 {
                     $value['results'][] = (object) array(
-                        'id'=>$r->id,
+                        'product_id'=>$r->product_id,
                         'title'=>$r->title,
                         'description'=>$r->description,
                         'image' => $r->image,
@@ -109,7 +109,7 @@ class ZFLucene
         {
             $index=new Zend_Search_Lucene(Yii::getPathOfAlias('application.' . $this->indexFiles), true);
 
-            $docs=$index->find("id:{$params->id}");
+            $docs=$index->find("product_id:{$params->id}");
             foreach ($docs as $d)
                 $index->delete($d);
 
@@ -131,7 +131,7 @@ class ZFLucene
      **/
     public function delete($id)
     {
-        $docs=$index->find("id:{$id}");
+        $docs=$index->find("product_id:{$id}");
         $tf=true;
         foreach ($docs as $d)
             $tf=$tf && $index->delete($d);
@@ -152,7 +152,7 @@ class ZFLucene
         {
             $doc->addField(
                 Zend_Search_Lucene_Field::{$t}($f,
-                CHtml::encode($params->$f), 'utf-8')
+                CHtml::encode(($f=='product_id')? $params->id : $params->$f), 'utf-8')
             );  
         }    
 

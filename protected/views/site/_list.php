@@ -1,8 +1,8 @@
-                <div class="box">
+     <div class="box">
                     <div class="box-heading"><?php echo $name; ?></div>
                     <div class="box-content">
                         <div class="box-product">
-                            <?php foreach ($list as $l): ?>
+                            <?php foreach ($list as $l): $l->id=!empty($l->id) ? $l->id :$l->product_id; ?>
                             <div>
                                 <div class="image">
                                     <a href="<?php echo Yii::app()->createUrl('site/product', array('id' => $l->id)); ?>">
