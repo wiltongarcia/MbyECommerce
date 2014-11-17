@@ -24,5 +24,6 @@ O código do projeto deve ser colocado no github ou bitbucket do candidato e dev
 -   As buscas foram idexadas usando o ZendLucene(http://framework.zend.com/manual/1.12/en/zend.search.lucene.html) e os resultados foram guardados no memcached;
 -   A senha do admin é a padrão do Yii (user: admin, pass: admin);
 -   O Diagrama de banco de dados pode ser visualizado em https://drive.google.com/file/d/0B0ftvEoVq2iLblBFcW5WdjFhd2s/view?usp=sharing ;
--   Tudo que foi utlizado nesse projeto está em UTF-8.
+-   Tudo que foi utlizado nesse projeto está em UTF-8;
+-   O Template HTML utilizado pode ser encontrado em http://www.santoshsetty.com/tf/opencart-templates/mystockimageshop-v15/index.php?route=common/home .
 
