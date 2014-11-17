@@ -17,12 +17,12 @@ O código do projeto deve ser colocado no github ou bitbucket do candidato e dev
 # Especificações do Desenvolvedor
 -   A estrutura do banco de dados está na pasta docs/dump/ e se chama database.sql;
 -   Foi utilizado no desenvolvimento a versão 5.5.27 do Mysql;
--   Selecione Yii Framework 1.1 acreditando que é a versão mais proxima a que o cliente utiliza;
+-   Selecionei Yii Framework 1.1 acreditando que é a versão mais proxima a que o cliente utiliza;
 -   Utilizei o memcached para fazer cache das queries mais pesadas, das buscas e para fazer a fila de pedidos;
 -   A extensão utilizada para o memcached foi a Memchache(http://php.net/manual/en/book.memcache.php), que é default no Yii 1.1;
 -   Para fazer a fazer a fila de pedidos eu usei o MEMQ(https://github.com/abhinavsingh/memq), mas modifiquei a extensão para Menchache, já que o MEMQ utiliza o Mencached(http://php.net/manual/pt_BR/book.memcached.php);
--   As buscas foram idexadas usando o ZendLucene(http://framework.zend.com/manual/1.12/en/zend.search.lucene.html) e os resultados foram guardados no memcached
--   A senha do admin é a padrão do Yii (user: admin, pass: admin)
--   O Diagrama de banco de dados pode ser visualizado em https://drive.google.com/file/d/0B0ftvEoVq2iLblBFcW5WdjFhd2s/view?usp=sharing
--   Tudo que foi utlizado nesse projeto está em UTF-8
+-   As buscas foram idexadas usando o ZendLucene(http://framework.zend.com/manual/1.12/en/zend.search.lucene.html) e os resultados foram guardados no memcached;
+-   A senha do admin é a padrão do Yii (user: admin, pass: admin);
+-   O Diagrama de banco de dados pode ser visualizado em https://drive.google.com/file/d/0B0ftvEoVq2iLblBFcW5WdjFhd2s/view?usp=sharing ;
+-   Tudo que foi utlizado nesse projeto está em UTF-8.
 
