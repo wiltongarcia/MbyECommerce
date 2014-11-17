@@ -4,7 +4,18 @@
                         <a href="http://www.santoshsetty.com/tf/opencart-templates/mystockimageshop-v15/index.php?route=common/home">Home</a>
                         » <a href="#">Order: <?php echo $order; ?></a>
                     </div>
-                    <div class="information"><h1>Order Code: <?php echo $order; ?></h1></div>
+                    <div class="information">
+                        <h1>Order Code: <?php echo $order; ?></h1>
+                        User:<br>
+                        Name:<?php echo $user->name; ?> <br>
+                        Email:<?php echo $user->email; ?> <br><br>
+
+                        Address:<br>
+                        Street:<?php echo $address->street; ?><br>
+                        City:<?php echo $address->city; ?><br>
+                        Zip Code:<?php echo $address->zip_code; ?><br>
+                
+                    </div>
                     <h1>Order Items</h1>
                      <?php echo CHtml::beginForm(array('site/checkout'), 'post', array('id'=> 'basket')); ?>
                         <div class="cart-info">

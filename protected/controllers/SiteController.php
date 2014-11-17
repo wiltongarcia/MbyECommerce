@@ -197,6 +197,8 @@ class SiteController extends Controller
                 'categories'=>$categoryModel->getCategoriesWithTotal(),
                 'cart'=>$cart,
                 'order'=>uniqid(),
+                'user'=>$user,
+                'address'=>$address,
             )); 
         }
         else

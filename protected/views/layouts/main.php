@@ -35,7 +35,8 @@
 				array('label'=>'Products', 'url'=>array('/products/index')),
 				array('label'=>'Categories', 'url'=>array('/categories/index')),
 				array('label'=>'Characteristics', 'url'=>array('/characteristics/index')),
-				array('label'=>'Orders', 'url'=>array('/Orders/index')),
+				array('label'=>'Orders', 'url'=>array('/orders/index')),
+				array('label'=>'Users', 'url'=>array('/users/index')),
 				array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
 				array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
 			),
