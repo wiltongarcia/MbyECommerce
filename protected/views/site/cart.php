@@ -6,11 +6,11 @@
                     </div>
                     <h1>Shopping Cart</h1>
                      <?php echo CHtml::beginForm(array('site/checkout'), 'post', array('id'=> 'basket')); ?>
+                        <?php if (!empty($cart['items'])): ?>
                         <div class="cart-info">
                             <table>
                                 <thead>
                                     <tr>
-                                        <td class="remove">Remove</td>
                                         <td class="image">Image</td>
                                         <td class="name">Product Name</td>
                                         <td class="quantity">Quantity</td>
@@ -22,7 +22,6 @@
                                     <?php foreach ($cart['items'] as $k=>$p):  ?>
                                     <input type="hidden" name="ordeItems[<?php echo $k; ?>][quantity]" value="<?php echo $p['quantity']; ?>" size="3">
                                     <tr>
-                                        <td class="remove"><input type="checkbox" name="remove[]" value="50"></td>
                                         <td class="image">                    
                                             <a href="#">
                                                 <div style="width:65px;height:50px;background: #F0F0F0 url(images/<?php echo $p['image']; ?>) no-repeat center center;background-size: 65px"></div>
@@ -59,6 +58,9 @@
                         <?php $this->renderPartial('_useraddress', array('cachedUser' => $cachedUser, 'cachedAddress' => $cachedAddress)); ?>
                     <?php echo CHtml::endForm(''); ?>
                     <div class="buttons">
+                        <div class="left">
+                            <a href="<?php echo Yii::app()->createUrl('site/deleteCart'); ?>" class="button"><span>Delete Cart</span></a>
+                        </div>
                         <div class="right">
                             <a href="<?php echo Yii::app()->createUrl('site/checkout'); ?>" class="button checkout-button"><span>Checkout</span></a>
                         </div>
@@ -76,4 +78,23 @@
                         });
                     });
                 </script>
+                <?php else: ?>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <h1>Cart empty.</h1>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <?php endIf; ?>
                 <?php $this->renderPartial('_scriptcart'); ?>

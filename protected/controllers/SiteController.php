@@ -64,7 +64,19 @@ class SiteController extends Controller
             'cachedUser' => $this->getUserFromCache($this->getUserCacheId()),
             'cachedAddress' => $this->getAddressFromCache($this->getAddressCacheId()),
         ));    
-    }    
+    }  
+
+    /**
+     * Apaga o carrinho e redireciona para a home
+     *
+     * @return void
+     * @author Wilton Garcia
+     **/
+    public function actionDeleteCart()
+    {
+        $this->destroyCart();
+	    $this->redirect(Yii::app()->createUrl('site/index'));
+    }  
 
 	/**
 	 * This is the action to handle external exceptions.
