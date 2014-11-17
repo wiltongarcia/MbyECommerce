@@ -61,6 +61,8 @@ class SiteController extends Controller
         $this->render('cart',array(
             'categories'=>$categoryModel->getCategoriesWithTotal(),
             'cart'=>$this->getCart(),
+            'cachedUser' => $this->getUserFromCache($this->getUserCacheId()),
+            'cachedAddress' => $this->getAddressFromCache($this->getAddressCacheId()),
         ));    
     }    
 
@@ -99,7 +101,7 @@ class SiteController extends Controller
 			$model->attributes=$_POST['LoginForm'];
 			// validate user input and redirect to the previous page if valid
 			if($model->validate() && $model->login())
-				$this->redirect(Yii::app()->user->returnUrl);
+				$this->redirect(Yii::app()->createUrl('products/index'));
 		}
 		// display the login form
 		$this->render('login',array('model'=>$model));
@@ -161,11 +163,21 @@ class SiteController extends Controller
     {
         $cart=$this->getCart();
 
-        if (!empty($cart))
+        if (!empty($cart) && !empty($_POST))
         {    
-            $this->destroyCart();
-            $order = $this->processOrder($cart);
+            //processa os dados do usuario e salva no banco
+            $user=$this->processUser();
 
+            //processa os dados do pedido e salva no banco
+            $order=$this->processOrder($cart);  
+
+            //processa os dados do endereço do usuário
+            $address=$this->processAddress($user, $order);
+
+            //apaga o carrinho do Memcached e remove os dados dos cookies
+            $this->destroyCart();   
+
+            //coloca a order na fila
             $this->enqueue($order);
 
             $categoryModel=new Category();
@@ -182,7 +194,7 @@ class SiteController extends Controller
     }
 
     /**
-     * undocumented function
+     * Retorna o carrinho do cache
      *
      * @return void
      * @author Me
@@ -212,8 +224,7 @@ class SiteController extends Controller
      **/
     protected function destroyCart()
     {
-        return setcookie('__cid', '', time()+(30 * 24 * 3600), '/') 
-                && setcookie('__ci', '', time()+(30 * 24 * 3600), '/') 
+        return setcookie('__ci', '', time()+(30 * 24 * 3600), '/') 
                 &&  setcookie('__ct', '', time()+(30 * 24 * 3600), '/') 
                 && Yii::app()->cache->delete($this->getCacheId());   
     }
@@ -248,6 +259,55 @@ class SiteController extends Controller
     }
 
     /**
+     * Processa os dados do formulário e salva no banco
+     *
+     * @return User
+     * @author Wilton Garcia
+     **/
+    protected function processUser()
+    {
+        $user=new User();
+        $user->attributes=$_POST['User'];
+        $r=$user->save();
+
+        Yii::app()->cache->set($this->getUserCacheId(), $user, (30 * 24 * 3600));
+
+        if ($r)
+            return $user;
+        else
+             $this->redirect(Yii::app()->createUrl('site/cart'));
+           
+    }
+
+    /**
+     * Processa os dados do endereço do usuario e salva no banco
+     *
+     * @return Address
+     * @author Wilton Garcia
+     **/
+    protected function processAddress($user, $order)
+    {
+        $address=new Address();
+        $address->attributes=$_POST['Address'];
+        $address->user_id=$user->id;
+
+        $r=$address->save();
+
+        Yii::app()->cache->set($this->getAddressCacheId(), $address, (30 * 24 * 3600));
+
+        if ($r) {
+            $orderAddress=new OrderAddress;
+            $orderAddress->order_id=$order->id;
+            $orderAddress->address_id=$address->id;
+            $orderAddress->save();
+
+            return $address;
+        }
+        else
+             $this->redirect(Yii::app()->createUrl('site/cart'));   
+    }
+
+    /**
      * Insere a order na fila
      *
      * @return void
@@ -259,4 +319,47 @@ class SiteController extends Controller
         $queue->insert($order);        
     }
 
+    /**
+     * retorna o id do cache de usuarios
+     *
+     * @return String
+     * @author Wilton
+     **/
+    protected function getUserCacheId()
+    {
+        return "{$this->getCacheId()}_user";
+    }
+    
+    /**
+     * retorna o id do cache de address
+     *
+     * @return String
+     * @author Wilton
+     **/
+    protected function getAddressCacheId()
+    {
+        return "{$this->getCacheId()}_address";
+    }
+
+    /**
+     * Retorna o usuario do cache
+     *
+     * @return Array
+     * @author Wilton
+     **/
+    protected function getUserFromCache($id)
+    {
+        return Yii::app()->cache->get($id);
+    }
+
+    /**
+     * Retorna o endereço do cache
+     *
+     * @return Array
+     * @author Wilton
+     **/
+    protected function getAddressFromCache($id)
+    {
+        return Yii::app()->cache->get($id);
+    }
 }

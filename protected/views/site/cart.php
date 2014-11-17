@@ -5,7 +5,7 @@
                         » <a href="./Shopping Cart_files/Shopping Cart.html">Shopping Cart</a>
                     </div>
                     <h1>Shopping Cart</h1>
-                     <?php echo CHtml::beginForm(array(), 'post', array('id'=> 'basket')); ?>
+                     <?php echo CHtml::beginForm(array('site/checkout'), 'post', array('id'=> 'basket')); ?>
                         <div class="cart-info">
                             <table>
                                 <thead>
@@ -45,25 +45,35 @@
                                 </tbody>
                             </table>
                         </div>
-                        <?php echo CHtml::endForm(''); ?>
-                    <div class="cart-total">
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td colspan="5"></td>
-                                    <td class="right"><b>Total:</b></td>
-                                    <td class="right">$<?php echo number_format($cart['totalValue'], 2); ?></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                        <div class="cart-total">               
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="5"></td>
+                                        <td class="right"><b>Total:</b></td>
+                                        <td class="right">$<?php echo number_format($cart['totalValue'], 2); ?></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <?php $this->renderPartial('_useraddress', array('cachedUser' => $cachedUser, 'cachedAddress' => $cachedAddress)); ?>
+                    <?php echo CHtml::endForm(''); ?>
                     <div class="buttons">
                         <div class="right">
-                            <a href="<?php echo Yii::app()->createUrl('site/checkout'); ?>" class="button"><span>Checkout</span></a>
+                            <a href="<?php echo Yii::app()->createUrl('site/checkout'); ?>" class="button checkout-button"><span>Checkout</span></a>
                         </div>
                         <div class="center">
                             <a href="<?php echo Yii::app()->createUrl('site/index'); ?>" class="button"><span>Continue Shopping</span></a>
                         </div>
                     </div>
                 </div>
+                <script type="text/javascript">
+                    $(function () {
+                        $('.checkout-button').click(function (e) {
+                            e.preventDefault();
+
+                            $('#basket').submit();
+                        });
+                    });
+                </script>
                 <?php $this->renderPartial('_scriptcart'); ?>
